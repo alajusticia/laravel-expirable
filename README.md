@@ -390,4 +390,4 @@ Then, run this command: `php artisan expirable:purge`
 
 ## License
 
-Open source, licensed under the [MIT license](LICENSE.md).
+Open source, licensed under the [MIT license](LICENSE).
