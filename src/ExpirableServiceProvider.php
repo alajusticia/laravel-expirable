@@ -31,7 +31,7 @@ class ExpirableServiceProvider extends ServiceProvider
         // Publish config
         $this->publishes([
             __DIR__.'/../config/expirable.php' => config_path('expirable.php'),
-        ], 'config');
+        ]);
 
         // Register macros
         Blueprint::mixin(new BlueprintMacros);

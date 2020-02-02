@@ -30,6 +30,8 @@ When the expiration date is reached, the model will automatically disappear from
   * [Revive expired models](#revive-expired-models)
   * [Make existing models eternal](#make-existing-models-eternal)
   * [Get the status of a model](#get-the-status-of-a-model)
+  * [Purge expired records](#purge-expired-records)
+* [License](#license)
 
 ## Installation
 
@@ -39,19 +41,10 @@ Install the package via composer using this command:
 composer require alajusticia/laravel-expirable
 ```
 
-The service provider will automatically get registered. Or you may manually add it in your `config/app.php` file:
-
-```php
-'providers' => [
-    // ...
-    ALajusticia\Expirable\ExpirableServiceProvider::class,
-];
-```
-
 You can publish the configuration file with:
 
 ```bash
-php artisan vendor:publish --provider="ALajusticia\Expirable\ExpirableServiceProvider" --tag="config"
+php artisan vendor:publish --provider="ALajusticia\Expirable\ExpirableServiceProvider"
 ```
 
 ### Prepare your model
@@ -67,11 +60,12 @@ class Subscription extends Model
     use Expirable;
 ```
 
-#### Change the default name of the attribute
+#### Default name of the attribute
 
 By default the package adds an attribute named `expires_at` on your model.
 You can change this name by setting the `EXPIRES_AT` constant (don't forget to set the same name for the column in
 the migration, [see below](#prepare-your-migration)).
+
 For example, let's say that we have a `Subscription` model and we want the attribute to be `ends_at`:
 
 ```php
@@ -86,13 +80,15 @@ class Subscription extends Model
 ```
 
 You can also change the attribute name globally for all your expirable models by using the `attribute_name` option in
-the expirable.php configuration file (the constant prevails).
+the `expirable.php` configuration file (the constant prevails).
 
 #### Set a default period of validity
 
-You can set a default period of validity with the `defaultExpiresAt` public static function. This function must return
-a date object or `null`. This way, on saving the model the date of expiration will be automatically added unless you
+You can set a default period of validity with the `defaultExpiresAt` public static function.
+
+This method must return a date object or `null`. This way, on saving the model the date of expiration will be automatically added unless you
 explicitly provide a date.
+
 An example to set a default period of validity of six months:
 
 ```php
@@ -376,3 +372,22 @@ if ($subscription->isExpired()) {
     $user->notify(new RenewalProposal($subscription));
 }
 ```
+
+### Purge expired records
+
+This package comes with a command to delete expired records from the database.
+
+In order to indicate that a model should be purged, add its class to the `purge` array of
+the configuration file:
+
+```php
+    'purge' => [
+        \App\Subscription::class,
+    ],
+```
+
+Then, run this command: `php artisan expirable:purge`
+
+## License
+
+Open source, licensed under the [MIT license](LICENSE.md).

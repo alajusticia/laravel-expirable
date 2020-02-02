@@ -146,7 +146,7 @@ trait Expirable
     }
 
     /**
-     * Get the real name of the "expires_at" column.
+     * Get the name of the "expires_at" column.
      *
      * @return string
      */
