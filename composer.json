@@ -1,5 +1,5 @@
 {
-    "name": "anthonylajusticia/laravel-expirable",
+    "name": "alajusticia/laravel-expirable",
     "description": "Make Eloquent models expirable",
     "license": "MIT",
     "authors": [
@@ -15,13 +15,13 @@
     },
     "autoload": {
         "psr-4": {
-            "AnthonyLajusticia\\Expirable\\": "src"
+            "ALajusticia\\Expirable\\": "src"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "AnthonyLajusticia\\Expirable\\ExpirableServiceProvider"
+                "ALajusticia\\Expirable\\ExpirableServiceProvider"
             ]
         }
     }

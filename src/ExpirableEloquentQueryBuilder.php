@@ -1,8 +1,8 @@
 <?php
 
-namespace AnthonyLajusticia\Expirable;
+namespace ALajusticia\Expirable;
 
-use AnthonyLajusticia\Expirable\Scopes\ExpirationScope;
+use ALajusticia\Expirable\Scopes\ExpirationScope;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 

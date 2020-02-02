@@ -1,9 +1,9 @@
 <?php
 
-namespace AnthonyLajusticia\Expirable\Traits;
+namespace ALajusticia\Expirable\Traits;
 
-use AnthonyLajusticia\Expirable\ExpirableEloquentQueryBuilder;
-use AnthonyLajusticia\Expirable\Scopes\ExpirationScope;
+use ALajusticia\Expirable\ExpirableEloquentQueryBuilder;
+use ALajusticia\Expirable\Scopes\ExpirationScope;
 use Carbon\Carbon;
 use Illuminate\Support\Collection as BaseCollection;
 

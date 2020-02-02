@@ -1,6 +1,6 @@
 <?php
 
-namespace AnthonyLajusticia\Expirable\Scopes;
+namespace ALajusticia\Expirable\Scopes;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;

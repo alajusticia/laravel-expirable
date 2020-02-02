@@ -1,8 +1,8 @@
 <?php
 
-namespace AnthonyLajusticia\Expirable;
+namespace ALajusticia\Expirable;
 
-use AnthonyLajusticia\Expirable\Macros\BlueprintMacros;
+use ALajusticia\Expirable\Macros\BlueprintMacros;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\ServiceProvider;
 

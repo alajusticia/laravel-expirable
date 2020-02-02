@@ -1,6 +1,6 @@
 <?php
 
-namespace AnthonyLajusticia\Expirable\Macros;
+namespace ALajusticia\Expirable\Macros;
 
 class BlueprintMacros
 {

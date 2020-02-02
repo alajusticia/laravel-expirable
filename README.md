@@ -36,7 +36,7 @@ When the expiration date is reached, the model will automatically disappear from
 Install the package via composer using this command:
 
 ```bash
-composer require anthonylajusticia/laravel-expirable
+composer require alajusticia/laravel-expirable
 ```
 
 The service provider will automatically get registered. Or you may manually add it in your `config/app.php` file:
@@ -44,14 +44,14 @@ The service provider will automatically get registered. Or you may manually add 
 ```php
 'providers' => [
     // ...
-    AnthonyLajusticia\Expirable\ExpirableServiceProvider::class,
+    ALajusticia\Expirable\ExpirableServiceProvider::class,
 ];
 ```
 
 You can publish the configuration file with:
 
 ```bash
-php artisan vendor:publish --provider="AnthonyLajusticia\Expirable\ExpirableServiceProvider" --tag="config"
+php artisan vendor:publish --provider="ALajusticia\Expirable\ExpirableServiceProvider" --tag="config"
 ```
 
 ### Prepare your model
@@ -59,7 +59,7 @@ php artisan vendor:publish --provider="AnthonyLajusticia\Expirable\ExpirableServ
 To make a model expirable, add the Expirable trait provided by this package:
 
 ```php
-use AnthonyLajusticia\Expirable\Traits\Expirable;
+use ALajusticia\Expirable\Traits\Expirable;
 use Illuminate\Database\Eloquent\Model;
 
 class Subscription extends Model
@@ -75,7 +75,7 @@ the migration, [see below](#prepare-your-migration)).
 For example, let's say that we have a `Subscription` model and we want the attribute to be `ends_at`:
 
 ```php
-use AnthonyLajusticia\Expirable\Traits\Expirable;
+use ALajusticia\Expirable\Traits\Expirable;
 use Illuminate\Database\Eloquent\Model;
 
 class Subscription extends Model
@@ -96,7 +96,7 @@ explicitly provide a date.
 An example to set a default period of validity of six months:
 
 ```php
-use AnthonyLajusticia\Expirable\Traits\Expirable;
+use ALajusticia\Expirable\Traits\Expirable;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
