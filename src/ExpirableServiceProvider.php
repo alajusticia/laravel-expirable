@@ -19,6 +19,11 @@ class ExpirableServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(
             __DIR__.'/../config/expirable.php', 'expirable'
         );
+
+        // Register commands
+        $this->commands([
+            Commands\PurgeCommand::class,
+        ]);
     }
 
     /**
