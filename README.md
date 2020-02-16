@@ -8,6 +8,7 @@ It relies on an additional attribute (named `expires_at` by default) that contai
 When the expiration date is reached, the model will automatically disappear from all the Eloquent query results
 (but still remain in the database).
 
+* [Compatibility](#compatibility)
 * [Installation](#installation)
   * [Prepare your model](#prepare-your-model)
     * [Change the default name of the attribute](#change-the-default-name-of-the-attribute)
@@ -32,6 +33,10 @@ When the expiration date is reached, the model will automatically disappear from
   * [Get the status of a model](#get-the-status-of-a-model)
   * [Purge expired records](#purge-expired-records)
 * [License](#license)
+
+## Compatibility
+
+This package has been tested with **Laravel >= 5.8**.
 
 ## Installation
 
