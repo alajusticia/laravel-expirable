@@ -60,13 +60,15 @@ class Subscription extends Model
     use Expirable;
 ```
 
+> This trait makes use of `ALajusticia\Expirable\ExpirableEloquentQueryBuilder`. So, if your model is already using a custom Eloquent query builder, take into account that this custom query builder must extend the `ALajusticia\Expirable\ExpirableEloquentQueryBuilder` query builder provided by this package.
+
 #### Default name of the attribute
 
 By default the package adds an attribute named `expires_at` on your model.
 You can change this name by setting the `EXPIRES_AT` constant (don't forget to set the same name for the column in
 the migration, [see below](#prepare-your-migration)).
 
-For example, let's say that we have a `Subscription` model and we want the attribute to be `ends_at`:
+For example, let's say that we have a `App\Subscription` model and we want the attribute to be `ends_at`:
 
 ```php
 use ALajusticia\Expirable\Traits\Expirable;
@@ -203,7 +205,7 @@ To disable the default filtering and retrieve all the models, ignoring their exp
 
 ```php
 // Get all subscriptions
-$subscriptions = App\Subscription::withExpired->get();
+$subscriptions = App\Subscription::withExpired()->get();
 ```
 
 #### Retrieving only expired models
@@ -212,7 +214,7 @@ Use the onlyExpired scope:
 
 ```php
 // Get expired subscriptions
-$subscriptions = App\Subscription::onlyExpired->get();
+$subscriptions = App\Subscription::onlyExpired()->get();
 ```
 
 #### Retrieving only eternal models
@@ -221,7 +223,7 @@ To get only the models which do not expire (with expiration date attribute to `n
 
 ```php
 // Get unlimited subscriptions
-$subscriptions = App\Subscription::onlyEternal->get();
+$subscriptions = App\Subscription::onlyEternal()->get();
 ```
 
 #### Retrieving expired models since
@@ -279,7 +281,7 @@ $subscription->save();
 ```
 ```php
 // Set multiple subscriptions valid for one year
-Subscription::find([1, 2, 3])->expiresAt(Carbon::now()->addYear());
+App\Subscription::whereKey([1, 2, 3])->expiresAt(Carbon::now()->addYear());
 ```
 
 #### Using lifetime()
