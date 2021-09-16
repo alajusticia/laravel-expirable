@@ -43,6 +43,16 @@ trait Expirable
     }
 
     /**
+     * Get the expiration date.
+     *
+     * @return object
+     */
+    public function getExpirationDate()
+    {
+        return $this->{self::getExpirationAttribute()};
+    }
+
+    /**
      * Set the expiration date and return the instance.
      *
      * @param object|null $expirationDate
@@ -90,6 +100,48 @@ trait Expirable
         }
 
         return false;
+    }
+
+    /**
+     * Extend the lifetime by a human readable period.
+     *
+     * @param string $period
+     * @return self
+     */
+    public function extendLifetimeBy(string $period): self
+    {
+        $currentExpirationDate = $this->{self::getExpirationAttribute()};
+
+        $this->{self::getExpirationAttribute()} = $currentExpirationDate->add($period);
+
+        return $this;
+    }
+
+    /**
+     * Shorten the lifetime by a human readable period.
+     *
+     * @param string $period
+     * @return self
+     */
+    public function shortenLifetimeBy(string $period): self
+    {
+        $currentExpirationDate = $this->{self::getExpirationAttribute()};
+
+        $this->{self::getExpirationAttribute()} = $currentExpirationDate->sub($period);
+
+        return $this;
+    }
+
+    /**
+     * Reset the expiration date to the default value.
+     *
+     * @return self
+     */
+    public function resetExpiration(): self
+    {
+        $this->{self::getExpirationAttribute()} = self::defaultExpiresAt();
+
+        return $this;
     }
 
     /**

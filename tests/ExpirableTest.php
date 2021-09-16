@@ -43,6 +43,20 @@ class ExpirableTest extends TestCase
         $this->assertNotEmpty(Subscription::all());
         sleep(2);
         $this->assertEmpty(Subscription::all());
+
+        // Test extendLifetimeBy() method
+        $subscription->revive(now()->addDay());
+        $subscription->extendLifetimeBy('1 day');
+        $this->assertTrue(now()->addDays(2)->isSameDay($subscription->getExpirationDate()));
+
+        // Test shortenLifetimeBy() method
+        $subscription->revive(now()->addDays(2));
+        $subscription->shortenLifetimeBy('1 day');
+        $this->assertTrue(now()->addDay()->isSameDay($subscription->getExpirationDate()));
+
+        // Test resetExpiration() method
+        $subscription->resetExpiration();
+        $this->assertTrue($subscription->isEternal());
     }
 
     public function test_multiple_models()

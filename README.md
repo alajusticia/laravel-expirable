@@ -30,6 +30,9 @@ When the expiration date is reached, the model will automatically disappear from
     * [Expire models by query](#expire-models-by-query)
   * [Revive expired models](#revive-expired-models)
   * [Make existing models eternal](#make-existing-models-eternal)
+  * [Extend model lifetime](#extend-model-lifetime)
+  * [Shorten model lifetime](#shorten-model-lifetime)
+  * [Reset the expiration date to default](#reset-the-expiration-date-to-default)
   * [Get the status of a model](#get-the-status-of-a-model)
   * [Purge expired records](#purge-expired-records)
 * [License](#license)
@@ -373,6 +376,30 @@ $subscription->makeEternal();
 ```php
 // Make eternal by query
 App\Subscription::where('plan', 'business')->makeEternal();
+```
+
+### Extend model lifetime
+
+With the `extendLifetimeBy`, you can extend the model lifetime by a human readable period (using the same syntax as the `lifetime` method): 
+
+```php
+$subscription->extendLifetimeBy('1 month')->save();
+```
+
+In the same way, you have the ability to shorten the model lifetime with the `shortenLifetimeBy` method:
+
+### Shorten model lifetime
+
+```php
+$subscription->shortenLifetimeBy('3 days')->save();
+```
+
+### Reset the expiration date to default
+
+You can reset the expiration date to its default value (`null` or the date returned by the `defaultExpiresAt` static function):
+
+```php
+$subscription->resetExpiration()->save();
 ```
 
 ### Get the status of a model
