@@ -65,8 +65,6 @@ class Subscription extends Model
     use Expirable;
 ```
 
-> This trait makes use of `ALajusticia\Expirable\ExpirableEloquentQueryBuilder`. So, if your model is already using a custom Eloquent query builder, take into account that this custom query builder must extend the `ALajusticia\Expirable\ExpirableEloquentQueryBuilder` query builder provided by this package.
-
 #### Default name of the attribute
 
 By default the package adds an attribute named `expires_at` on your model.

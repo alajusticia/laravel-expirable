@@ -2,7 +2,6 @@
 
 namespace ALajusticia\Expirable\Traits;
 
-use ALajusticia\Expirable\ExpirableEloquentQueryBuilder;
 use ALajusticia\Expirable\Scopes\ExpirationScope;
 use Carbon\Carbon;
 use Illuminate\Support\Collection as BaseCollection;
@@ -159,7 +158,7 @@ trait Expirable
      *
      * @return string
      */
-    public function getQualifiedDeletedAtColumn(): string
+    public function getQualifiedExpirationColumn(): string
     {
         return $this->qualifyColumn($this->getExpirationAttribute());
     }
@@ -172,16 +171,5 @@ trait Expirable
     public static function defaultExpiresAt(): ?object
     {
         return null;
-    }
-
-    /**
-     * Create a new Eloquent query builder for the model.
-     *
-     * @param  \Illuminate\Database\Query\Builder  $query
-     * @return \Illuminate\Database\Eloquent\Builder|static
-     */
-    public function newEloquentBuilder($query)
-    {
-        return new ExpirableEloquentQueryBuilder($query);
     }
 }

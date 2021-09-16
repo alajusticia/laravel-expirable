@@ -32,7 +32,7 @@ class PurgeCommand extends Command
         $this->comment('Deleting expired records...');
         $this->line('');
 
-        foreach ($this->getPurgeableModels() as $purgeable) {
+        foreach (Config::get('expirable.purge', []) as $purgeable) {
 
             if (in_array('ALajusticia\Expirable\Traits\Expirable', class_uses($purgeable))) {
 
@@ -55,10 +55,5 @@ class PurgeCommand extends Command
         }
 
         $this->info('Purge completed!');
-    }
-
-    protected function getPurgeableModels()
-    {
-        return Config::get('expirable.purge', []);
     }
 }
