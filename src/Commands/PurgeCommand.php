@@ -3,7 +3,7 @@
 namespace ALajusticia\Expirable\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Container\Container;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Str;
 
 class PurgeCommand extends Command
@@ -59,6 +59,6 @@ class PurgeCommand extends Command
 
     protected function getPurgeableModels()
     {
-        return Container::getInstance()->make('config', [])->get('expirable.purge', []);
+        return Config::get('expirable.purge', []);
     }
 }

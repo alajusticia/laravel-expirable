@@ -5,20 +5,18 @@ namespace ALajusticia\Expirable\Traits;
 use ALajusticia\Expirable\ExpirableEloquentQueryBuilder;
 use ALajusticia\Expirable\Scopes\ExpirationScope;
 use Carbon\Carbon;
-use Illuminate\Container\Container;
 use Illuminate\Support\Collection as BaseCollection;
+use Illuminate\Support\Facades\Config;
 
 trait Expirable
 {
     /**
-     * The "booting" method of the model.
+     * Boot the Expirable trait for a model.
      *
      * @return void
      */
-    protected static function boot()
+    public static function bootExpirable()
     {
-        parent::boot();
-
         static::addGlobalScope(new ExpirationScope);
 
         static::creating(function($model) {
@@ -35,7 +33,7 @@ trait Expirable
      * @param object|null $expirationDate
      * @return self
      */
-    public function expiresAt($expirationDate)
+    public function expiresAt(?object $expirationDate): self
     {
         $this->{self::getExpirationAttribute()} = $expirationDate;
 
@@ -48,7 +46,7 @@ trait Expirable
      * @param string|null $period
      * @return self
      */
-    public function lifetime($period)
+    public function lifetime(?string $period): self
     {
         $this->{self::getExpirationAttribute()} = is_string($period) ? Carbon::now()->add($period) : null;
 
@@ -61,7 +59,7 @@ trait Expirable
      * @param object|string|null $newExpirationDate
      * @return bool
      */
-    public function revive($newExpirationDate = null)
+    public function revive($newExpirationDate = null): bool
     {
         if ($this->isExpired()) {
 
@@ -84,7 +82,7 @@ trait Expirable
      *
      * @return bool
      */
-    public function makeEternal()
+    public function makeEternal(): bool
     {
         $this->{self::getExpirationAttribute()} = null;
 
@@ -96,7 +94,7 @@ trait Expirable
      *
      * @return bool
      */
-    public function expire()
+    public function expire(): bool
     {
         $this->{self::getExpirationAttribute()} = Carbon::now();
 
@@ -109,7 +107,7 @@ trait Expirable
      * @param  \Illuminate\Support\Collection|array|int  $ids
      * @return int
      */
-    public static function expireByKey($ids)
+    public static function expireByKey($ids): int
     {
         // Support for collections
         if ($ids instanceof BaseCollection) {
@@ -131,7 +129,7 @@ trait Expirable
      *
      * @return bool
      */
-    public function isExpired()
+    public function isExpired(): bool
     {
         return !is_null($this->{self::getExpirationAttribute()}) && $this->{self::getExpirationAttribute()} <= Carbon::now();
     }
@@ -141,19 +139,29 @@ trait Expirable
      *
      * @return bool
      */
-    public function isEternal()
+    public function isEternal(): bool
     {
         return is_null($this->{self::getExpirationAttribute()});
     }
 
     /**
-     * Get the name of the "expires_at" column.
+     * Get the name of the "expires at" column.
      *
      * @return string
      */
-    public static function getExpirationAttribute()
+    public static function getExpirationAttribute(): string
     {
-        return defined('static::EXPIRES_AT') ? static::EXPIRES_AT : Container::getInstance()->make('config', [])->get('expirable.attribute_name', 'expires_at');
+        return defined('static::EXPIRES_AT') ? static::EXPIRES_AT : Config::get('expirable.attribute_name', 'expires_at');
+    }
+
+    /**
+     * Get the fully qualified "expires at" column.
+     *
+     * @return string
+     */
+    public function getQualifiedDeletedAtColumn(): string
+    {
+        return $this->qualifyColumn($this->getExpirationAttribute());
     }
 
     /**
@@ -161,7 +169,7 @@ trait Expirable
      *
      * @return object|null
      */
-    public static function defaultExpiresAt()
+    public static function defaultExpiresAt(): ?object
     {
         return null;
     }

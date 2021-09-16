@@ -2,7 +2,7 @@
 
 namespace ALajusticia\Expirable\Macros;
 
-use Illuminate\Container\Container;
+use Illuminate\Support\Facades\Config;
 
 class BlueprintMacros
 {
@@ -14,7 +14,7 @@ class BlueprintMacros
     public function expirable()
     {
         return function ($columnName = null) {
-            return $this->timestamp($columnName ?: $this->getDefaultColumnName())->nullable();
+            return $this->timestamp($columnName ?: Config::get('expirable.attribute_name', 'expires_at'))->nullable();
         };
     }
 
@@ -26,12 +26,7 @@ class BlueprintMacros
     public function dropExpirable()
     {
         return function ($columnName = null) {
-            return $this->dropColumn($columnName ?: $this->getDefaultColumnName());
+            return $this->dropColumn($columnName ?: Config::get('expirable.attribute_name', 'expires_at'));
         };
-    }
-
-    protected function getDefaultColumnName()
-    {
-        return Container::getInstance()->make('config', [])->get('expirable.attribute_name', 'expires_at');
     }
 }
