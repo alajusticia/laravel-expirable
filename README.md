@@ -11,7 +11,7 @@ When the expiration date is reached, the model will automatically disappear from
 * [Compatibility](#compatibility)
 * [Installation](#installation)
   * [Prepare your model](#prepare-your-model)
-    * [Change the default name of the attribute](#change-the-default-name-of-the-attribute)
+    * [Change the default name of the expiration attribute](#change-the-default-name-of-the-expiration-attribute)
     * [Set a default period of validity](#set-a-default-period-of-validity)
   * [Prepare your migration](#prepare-your-migration)
 * [Usage](#usage)
@@ -65,7 +65,9 @@ class Subscription extends Model
     use Expirable;
 ```
 
-#### Default name of the attribute
+This trait will automatically add the expiration attribute in the list of attributes that should be mutated to dates.
+
+#### Default name of the expiration attribute
 
 By default the package adds an attribute named `expires_at` on your model.
 You can change this name by setting the `EXPIRES_AT` constant (don't forget to set the same name for the column in
@@ -86,6 +88,7 @@ class Subscription extends Model
 
 You can also change the attribute name globally for all your expirable models by using the `attribute_name` option in
 the `expirable.php` configuration file (the constant prevails).
+If you do change the name globally in the configuration file, you don't have to set the name in the migration as it will be populated automatically.
 
 #### Set a default period of validity
 
@@ -127,14 +130,14 @@ class Subscription extends Model
 ### Prepare your migration
 
 The package requires that you add the expirable column in your migration.
-For convenience, the package provides a Blueprint macro ready to use in your migration file:
+For convenience, the package provides the `expirable()` and `dropExpirable()` blueprint macros ready to use in your migration files:
 
 ```php
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSubscriptionsTable extends Migration
+class AddExpirableColumnToSubscriptionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -143,38 +146,42 @@ class CreateSubscriptionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('subscriptions', function (Blueprint $table) {
-            // ...
-
+        Schema::table('subscriptions', function (Blueprint $table) {
             $table->expirable();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::table('subscriptions', function (Blueprint $table) {
+            $table->dropExpirable();
         });
     }
 ```
 
-By default the name of the database column, like the model attribute, is `expires_at`.
-If you modified the default name of the attribute on your model, you need to set the same custom name for the column
+By default the name of the database column, like the model attribute, will be `expires_at` or the one in the configuration file.
+If you modified the default name of the attribute on your model with the `EXPIRES_AT` constant, you need to set the same custom name for the column
 in your migration, by giving the macro a parameter with the name.
 
 To continue with our subscription example:
 
 ```php
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Database\Migrations\Migration;
-
-class CreateSubscriptionsTable extends Migration
-{
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
-        Schema::create('subscriptions', function (Blueprint $table) {
-            // ...
-
+        Schema::table('subscriptions', function (Blueprint $table) {
             $table->expirable('ends_at');
+        });
+    }
+
+    public function down()
+    {
+        Schema::table('subscriptions', function (Blueprint $table) {
+            $table->dropExpirable('ends_at');
         });
     }
 ```
