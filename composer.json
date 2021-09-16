@@ -11,7 +11,11 @@
         }
     ],
     "require": {
-        "php": "^7.2.5|^8.0"
+        "php": "^7.2.5|^8.0",
+        "illuminate/console": "^7.0|^8.0",
+        "illuminate/database": "^7.0|^8.0",
+        "illuminate/support": "^7.0|^8.0",
+        "nesbot/carbon": "^2.53"
     },
     "require-dev": {
         "mockery/mockery": "^1.3",
