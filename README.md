@@ -21,6 +21,7 @@ When the expiration date is reached, the model will automatically disappear from
     * [Retrieving only expired models](#retrieving-only-expired-models)
     * [Retrieving only eternal models](#retrieving-only-eternal-models)
     * [Retrieving expired models since](#retrieving-expired-models-since)
+  * [Get the expiration date](#get-the-expiration-date)
   * [Set the expiration date manually](#set-the-expiration-date-manually)
     * [The basic way](#the-basic-way)
     * [Using expiresAt()](#using-expiresat)
@@ -253,6 +254,14 @@ the query will be:
 ```php
 // Delete expired models since one year or more
 App\Subscription::expiredSince('1 year')->delete();
+```
+
+### Get the expiration date
+
+To get the expiration date without having to know the name of its attribute, use the getExpirationDate method:
+
+```php
+$subscription->getExpirationDate(); // Returns a date object
 ```
 
 ### Set the expiration date manually
