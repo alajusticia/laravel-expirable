@@ -5,6 +5,7 @@ namespace ALajusticia\Expirable\Traits;
 use ALajusticia\Expirable\ExpirableEloquentQueryBuilder;
 use ALajusticia\Expirable\Scopes\ExpirationScope;
 use Carbon\Carbon;
+use Illuminate\Container\Container;
 use Illuminate\Support\Collection as BaseCollection;
 
 trait Expirable
@@ -152,7 +153,7 @@ trait Expirable
      */
     public static function getExpirationAttribute()
     {
-        return defined('static::EXPIRES_AT') ? static::EXPIRES_AT : config('expirable.attribute_name', 'expires_at');
+        return defined('static::EXPIRES_AT') ? static::EXPIRES_AT : Container::getInstance()->make('config', [])->get('expirable.attribute_name', 'expires_at');
     }
 
     /**

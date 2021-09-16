@@ -3,6 +3,7 @@
 namespace ALajusticia\Expirable\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Container\Container;
 use Illuminate\Support\Str;
 
 class PurgeCommand extends Command
@@ -31,7 +32,7 @@ class PurgeCommand extends Command
         $this->comment('Deleting expired records...');
         $this->line('');
 
-        foreach (config('expirable.purge', []) as $purgeable) {
+        foreach ($this->getPurgeableModels() as $purgeable) {
 
             if (in_array('ALajusticia\Expirable\Traits\Expirable', class_uses($purgeable))) {
 
@@ -54,5 +55,10 @@ class PurgeCommand extends Command
         }
 
         $this->info('Purge completed!');
+    }
+
+    protected function getPurgeableModels()
+    {
+        return Container::getInstance()->make('config', [])->get('expirable.purge', []);
     }
 }
