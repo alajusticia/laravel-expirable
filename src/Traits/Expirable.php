@@ -33,6 +33,16 @@ trait Expirable
     }
 
     /**
+     * Initialize the Expirable trait for an instance.
+     *
+     * @return void
+     */
+    public function initializeExpirable()
+    {
+        $this->dates[] = self::getExpirationAttribute();
+    }
+
+    /**
      * Set the expiration date and return the instance.
      *
      * @param object|null $expirationDate
