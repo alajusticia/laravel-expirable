@@ -4,7 +4,7 @@ namespace ALajusticia\Expirable\Traits;
 
 use ALajusticia\Expirable\Scopes\ExpirationScope;
 use Carbon\Carbon;
-use Illuminate\Support\Collection as BaseCollection;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Config;
 
 /**
@@ -171,13 +171,13 @@ trait Expirable
     /**
      * Set the status to "expired" for the given model IDs.
      *
-     * @param  \Illuminate\Support\Collection|array|int  $ids
+     * @param  Collection|array|int  $ids
      * @return int
      */
     public static function expireByKey($ids): int
     {
         // Support for collections
-        if ($ids instanceof BaseCollection) {
+        if ($ids instanceof Collection) {
             $ids = $ids->all();
         }
 
