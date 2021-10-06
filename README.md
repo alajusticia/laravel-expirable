@@ -77,7 +77,7 @@ By default the package adds an attribute named `expires_at` on your model.
 You can change this name by setting the `EXPIRES_AT` constant (don't forget to set the same name for the column in
 the migration, [see below](#prepare-your-migration)).
 
-For example, let's say that we have a `App\Subscription` model and we want the attribute to be `ends_at`:
+For example, let's say that we have a `Subscription` model and we want the attribute to be `ends_at`:
 
 ```php
 use ALajusticia\Expirable\Traits\Expirable;
@@ -122,11 +122,11 @@ class Subscription extends Model
 
  ```php
  // Create a new subscription which will expire in six months (using default expiration date)
- $usbscription = new App\Subscription;
+ $usbscription = new Subscription;
  $subscription->save();
  
  // Create a new subscription which will expire in one year (overwrite the default expiration date)
-  $usbscription = new App\Subscription;
+  $usbscription = new Subscription;
   $subscription->expiresAt(Carbon::now()->addYear());
   $subscription->save();
  ```
@@ -203,7 +203,7 @@ For example:
 
 ```php
 // Get only valid and current subscriptions and exclude expired ones
-$subscriptions = App\Subscription::all();
+$subscriptions = Subscription::all();
 ```
 
 This, and all the next examples, work as well with relationships:
@@ -219,7 +219,7 @@ To disable the default filtering and retrieve all the models, ignoring their exp
 
 ```php
 // Get all subscriptions
-$subscriptions = App\Subscription::withExpired()->get();
+$subscriptions = Subscription::withExpired()->get();
 ```
 
 #### Retrieving only expired models
@@ -228,7 +228,7 @@ Use the onlyExpired scope:
 
 ```php
 // Get expired subscriptions
-$subscriptions = App\Subscription::onlyExpired()->get();
+$subscriptions = Subscription::onlyExpired()->get();
 ```
 
 #### Retrieving only eternal models
@@ -237,7 +237,7 @@ To get only the models which do not expire (with expiration date attribute to `n
 
 ```php
 // Get unlimited subscriptions
-$subscriptions = App\Subscription::onlyEternal()->get();
+$subscriptions = Subscription::onlyEternal()->get();
 ```
 
 #### Retrieving expired models since
@@ -253,7 +253,7 @@ the query will be:
 
 ```php
 // Delete expired models since one year or more
-App\Subscription::expiredSince('1 year')->delete();
+Subscription::expiredSince('1 year')->delete();
 ```
 
 ### Get the expiration date
@@ -273,7 +273,7 @@ with a date object (or `null` for eternal):
 
 ```php
 // Create a new subscription valid for one month
-$subscription = new App\Subscription();
+$subscription = new Subscription();
 $subscription->ends_at = Carbon::now()->addMonth();
 $subscription->save();
 ```
@@ -283,7 +283,7 @@ Of course it also works with mass assignment, but don't forget to add the attrib
 
 ```php
 // Create a new subscription valid for one month
-$subscription = App\Subscription::create([
+$subscription = Subscription::create([
     'plan' => 'premium',
     'ends_at' => Carbon::now()->addMonth(),
 ]);
@@ -297,13 +297,13 @@ On an Eloquent query the changes will be directly saved in the database. On a si
 
 ```php
 // Create a new subscription valid for one month
-$subscription = new App\Subscription();
+$subscription = new Subscription();
 $subscription->expiresAt(Carbon::now()->addMonth());
 $subscription->save();
 ```
 ```php
 // Set multiple subscriptions valid for one year
-App\Subscription::whereKey([1, 2, 3])->expiresAt(Carbon::now()->addYear());
+Subscription::whereKey([1, 2, 3])->expiresAt(Carbon::now()->addYear());
 ```
 
 #### Using lifetime()
@@ -313,7 +313,7 @@ The parameter must be a string and the syntax is the same as the syntax accepted
 
 ```php
 // Create a new subscription valid for one month
-$subscription = new App\Subscription();
+$subscription = new Subscription();
 $subscription->lifetime('1 month');
 $subscription->save();
 ```
@@ -335,20 +335,20 @@ In addition to a single primary key as its argument, the `expireByKey` method wi
 an array of primary keys, or a collection of primary keys: 
 
 ```php
-App\Subscription::expireByKey(1);
+Subscription::expireByKey(1);
 
-App\Subscription::expireByKey(1, 2, 3);
+Subscription::expireByKey(1, 2, 3);
 
-App\Subscription::expireByKey([1, 2, 3]);
+Subscription::expireByKey([1, 2, 3]);
 
-App\Subscription::expireByKey(collect([1, 2, 3]));
+Subscription::expireByKey(collect([1, 2, 3]));
 ```
 
 #### Expire models by query
 
 You can also run an expire statement on a set of models:
 ```php
-App\Subscription::where('plan', 'basic')->expire();
+Subscription::where('plan', 'basic')->expire();
 ```
 
 ### Revive expired models
@@ -370,7 +370,7 @@ Sure, it also works with queries:
 
 ```php
 // Revive by query
-App\Subscription::where('plan', 'plus')->revive();
+Subscription::where('plan', 'plus')->revive();
 ```
 
 ### Make existing models eternal
@@ -384,7 +384,7 @@ $subscription->makeEternal();
 ```
 ```php
 // Make eternal by query
-App\Subscription::where('plan', 'business')->makeEternal();
+Subscription::where('plan', 'business')->makeEternal();
 ```
 
 ### Extend model lifetime
@@ -430,7 +430,7 @@ the configuration file:
 
 ```php
     'purge' => [
-        \App\Subscription::class,
+        \App\Models\Subscription::class,
     ],
 ```
 
