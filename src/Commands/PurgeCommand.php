@@ -42,7 +42,7 @@ class PurgeCommand extends Command
 
                 $this->line($purgeable . ': ');
 
-                if ($this->usesExpirable($purgeable)) {
+                if (in_array(Expirable::class, class_uses_recursive($purgeable))) {
 
                     $total = call_user_func($purgeable . '::onlyExpired')->forceDelete();
 
@@ -65,24 +65,5 @@ class PurgeCommand extends Command
             $this->comment('There is no model in the purge array.');
             $this->comment('Add models you want to purge in the expirable.php configuration file.');
         }
-    }
-
-    /**
-     * Determine if a class uses the Expirable trait.
-     *
-     * @param string $class
-     * @return bool
-     */
-    protected function usesExpirable(string $class): bool
-    {
-        $traits = array_values(class_uses($class));
-
-        foreach (class_parents($class) as $parentClass) {
-            foreach (class_uses($parentClass) as $trait) {
-                $traits[] = $trait;
-            }
-        }
-
-        return in_array(Expirable::class, $traits);
     }
 }
