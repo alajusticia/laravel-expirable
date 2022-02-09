@@ -122,11 +122,11 @@ class Subscription extends Model
 
  ```php
  // Create a new subscription which will expire in six months (using default expiration date)
- $usbscription = new Subscription;
+ $subscription = new Subscription;
  $subscription->save();
  
  // Create a new subscription which will expire in one year (overwrite the default expiration date)
-  $usbscription = new Subscription;
+  $subscription = new Subscription;
   $subscription->expiresAt(Carbon::now()->addYear());
   $subscription->save();
  ```
