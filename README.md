@@ -40,7 +40,7 @@ When the expiration date is reached, the model will automatically disappear from
 
 ## Compatibility
 
-This package has been tested with **Laravel 5.8, 6, 7 and 8**.
+This package has been tested with **Laravel 5.8, 6, 7, 8 and 9**.
 
 ## Installation
 
