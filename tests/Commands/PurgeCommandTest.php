@@ -9,7 +9,7 @@ class PurgeCommandTest extends TestCase
 {
     public function test_purge_command()
     {
-        factory(Subscription::class, 10)->create();
+        Subscription::factory()->count(10)->create();
 
         Subscription::take(5)->expire();
 

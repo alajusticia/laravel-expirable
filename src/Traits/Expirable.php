@@ -39,7 +39,7 @@ trait Expirable
      */
     public function initializeExpirable()
     {
-        $this->dates[] = self::getExpirationAttribute();
+        $this->casts[self::getExpirationAttribute()] = 'datetime';
     }
 
     /**

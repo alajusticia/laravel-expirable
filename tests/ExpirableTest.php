@@ -92,7 +92,7 @@ class ExpirableTest extends TestCase
 
     public function test_grouped_actions()
     {
-        factory(Subscription::class, 10)->create();
+        Subscription::factory()->count(10)->create();
 
         // Test expireByKey() method ------------------------------------------
 

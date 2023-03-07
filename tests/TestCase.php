@@ -18,8 +18,6 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
         $this->loadMigrationsFrom(__DIR__.'/database/migrations');
 
         $this->artisan('migrate')->run();
-
-        $this->withFactories(__DIR__.'/database/factories');
     }
 
     /**
