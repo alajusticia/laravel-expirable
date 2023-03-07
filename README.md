@@ -40,7 +40,12 @@ When the expiration date is reached, the model will automatically disappear from
 
 ## Compatibility
 
-This package has been tested with **Laravel 5.8, 6, 7, 8 and 9**.
+| Laravel Expirable package version                              | Supported Laravel framework versions |
+|----------------------------------------------------------------|--------------------------------------|
+| v2                                                             | 10                                   |
+| [v1](https://github.com/alajusticia/laravel-expirable/tree/v1) | 5.8 to 9                             |
+
+You're reading the documentation for the latest version (v2) of this package.
 
 ## Installation
 
@@ -137,18 +142,18 @@ The package requires that you add the expirable column in your migration.
 For convenience, the package provides the `expirable()` and `dropExpirable()` blueprint macros ready to use in your migration files:
 
 ```php
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-class AddExpirableColumnToSubscriptionsTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::table('subscriptions', function (Blueprint $table) {
             $table->expirable();
@@ -160,12 +165,13 @@ class AddExpirableColumnToSubscriptionsTable extends Migration
      *
      * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::table('subscriptions', function (Blueprint $table) {
             $table->dropExpirable();
         });
     }
+};
 ```
 
 By default the name of the database column, like the model attribute, will be `expires_at` or the one in the configuration file.
