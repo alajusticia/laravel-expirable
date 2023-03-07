@@ -2,6 +2,7 @@
 .idea
 .vscode
 vendor
+.phpunit.cache/
 phpunit.xml
 .phpunit.result.cache
 composer.lock
