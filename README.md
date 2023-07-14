@@ -426,10 +426,15 @@ if ($subscription->isExpired()) {
 
 ### Purge expired records
 
-This package comes with a command to delete expired records from the database.
+This package comes with a command to delete expired records from the database:
 
-In order to indicate that a model should be purged, add its class to the `purge` array of
-the configuration file:
+```
+php artisan expirable:purge
+```
+
+You have two ways to indicate which models should be purged:
+
+- add their class to the `purge` array of the configuration file:
 
 ```php
     'purge' => [
@@ -437,7 +442,19 @@ the configuration file:
     ],
 ```
 
-Then, run this command: `php artisan expirable:purge`
+- pass one or several classes in argument of the purge command:
+
+```
+php artisan expirable:purge "App\Models\Subscription" "App\Models\Coupon"
+```
+
+Models passed as arguments take precedence (the `purge` array in the configuration file will be ignored).
+
+You can also specify a period of time to delete models expired since that given period, using the `since` option (the value of this option is passed to the [expiredSince query scope](#retrieving-expired-models-since)):
+
+```
+php artisan expirable:purge "App\Models\Subscription" --since="2 months"
+```
 
 ## License
 

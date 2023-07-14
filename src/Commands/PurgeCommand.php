@@ -14,7 +14,9 @@ class PurgeCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'expirable:purge';
+    protected $signature = 'expirable:purge
+                            {model?* : Optional list of models to purge. If not provided, will take the models in the purge array of the configuration file.}
+                            {--since= : Time since expiration.}';
 
     /**
      * The console command description.
@@ -30,21 +32,33 @@ class PurgeCommand extends Command
      */
     public function handle()
     {
-        $models = Config::get('expirable.purge', []);
+        $models = $this->argument('model');
+
+        if (empty($models)) {
+            $models = Config::get('expirable.purge', []);
+        }
 
         if (count($models)) {
+
+            $expiredSince = $this->option('since');
 
             $this->line('');
             $this->comment('Deleting expired records...');
             $this->line('');
 
-            foreach (Config::get('expirable.purge', []) as $purgeable) {
+            foreach ($models as $purgeable) {
 
                 $this->line($purgeable . ': ');
 
                 if (in_array(Expirable::class, class_uses_recursive($purgeable))) {
 
-                    $total = call_user_func($purgeable . '::onlyExpired')->forceDelete();
+                    if (!$expiredSince) {
+                        $query = call_user_func($purgeable . '::onlyExpired');
+                    } else {
+                        $query = call_user_func($purgeable . '::expiredSince', $expiredSince);
+                    }
+
+                    $total = $query->forceDelete();
 
                     if ($total > 0) {
                         $this->info($total . ' ' . Str::plural('record', $total) . ' deleted.');
@@ -62,8 +76,8 @@ class PurgeCommand extends Command
             $this->info('Purge completed!');
             $this->line('');
         } else {
-            $this->comment('There is no model in the purge array.');
-            $this->comment('Add models you want to purge in the expirable.php configuration file.');
+            $this->comment('There is no model to purge.');
+            $this->comment('Add models you want to purge in the expirable.php configuration file or pass models in argument of this command.');
         }
     }
 }
