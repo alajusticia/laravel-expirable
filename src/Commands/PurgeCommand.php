@@ -16,7 +16,7 @@ class PurgeCommand extends Command
      */
     protected $signature = 'expirable:purge
                             {model?* : Optional list of models to purge. If not provided, will take the models in the purge array of the configuration file.}
-                            {--since= : Time since expiry.}';
+                            {--since= : Time since expiration.}';
 
     /**
      * The console command description.
