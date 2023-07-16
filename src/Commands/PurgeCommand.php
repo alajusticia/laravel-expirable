@@ -16,7 +16,8 @@ class PurgeCommand extends Command
      */
     protected $signature = 'expirable:purge
                             {model?* : Optional list of models to purge. If not provided, will take the models in the purge array of the configuration file.}
-                            {--since= : Time since expiration.}';
+                            {--since= : Time since expiration.}
+                            {--force : Force delete models.}';
 
     /**
      * The console command description.
@@ -41,6 +42,7 @@ class PurgeCommand extends Command
         if (count($models)) {
 
             $expiredSince = $this->option('since');
+            $force = $this->option('force');
 
             $this->line('');
             $this->comment('Deleting expired records...');
@@ -58,7 +60,7 @@ class PurgeCommand extends Command
                         $query = call_user_func($purgeable . '::expiredSince', $expiredSince);
                     }
 
-                    $total = $query->forceDelete();
+                    $total = $force ? $query->forceDelete() : $query->delete();
 
                     if ($total > 0) {
                         $this->info($total . ' ' . Str::plural('record', $total) . ' deleted.');
