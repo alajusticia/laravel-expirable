@@ -459,6 +459,14 @@ You can also specify a period of time to delete models expired since that given 
 php artisan expirable:purge "App\Models\Subscription" --since="2 months"
 ```
 
+By default, this command will use force deletion to purge the models. If needed, you can specify the `mode` option with the value `soft` to perform a soft delete:
+
+```
+php artisan expirable:purge --mode=soft
+```
+
+:warning: Be aware that if you try to purge models depending on tables with foreign key constraints using the default `hard` mode, you will have to specify the desired action for the "on delete" property of the constraint (for example using the onDelete('cascade'), cascadeOnDelete() or nullOnDelete() modifiers on the foreign key in your migrations: [https://laravel.com/docs/10.x/migrations#foreign-key-constraints](https://laravel.com/docs/10.x/migrations#foreign-key-constraints)) or purge the child models first (ordering the command arguments or the array in the config file to start with the children) to avoid SQL errors.
+
 ## License
 
 Open source, licensed under the [MIT license](LICENSE).
