@@ -29,7 +29,8 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "ALajusticia\\Expirable\\Tests\\": "tests"
+            "ALajusticia\\Expirable\\Tests\\": "tests",
+            "ALajusticia\\Expirable\\Tests\\Database\\Factories\\": "tests/database/factories"
         }
     },
     "extra": {
