@@ -43,7 +43,7 @@ When the expiration date is reached, the model will automatically disappear from
 You're reading the documentation for the v1 of this package.
 This version supports **Laravel 5.8, 6, 7, 8 and 9**.
 
-For Laravel 10 support, [go to v2](https://github.com/alajusticia/laravel-expirable).
+[Go to latest version](https://github.com/alajusticia/laravel-expirable).
 
 ## Installation
 
