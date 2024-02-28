@@ -17,17 +17,6 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Mode
-    |--------------------------------------------------------------------------
-    |
-    | Whether the expirable:purge command deletion defaults to hard or soft.
-    | Defaults to hard for backward compatibility.
-    |
-    */
-    'mode' => 'hard',
-
-    /*
-    |--------------------------------------------------------------------------
     | Purge
     |--------------------------------------------------------------------------
     |
@@ -39,4 +28,14 @@ return [
 
     'purge' => [],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Purge Mode
+    |--------------------------------------------------------------------------
+    |
+    | Whether the expirable:purge command deletion defaults to hard or soft.
+    | Defaults to hard for backward compatibility.
+    |
+    */
+    'mode' => 'hard',
 ];

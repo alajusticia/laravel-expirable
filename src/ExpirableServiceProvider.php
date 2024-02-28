@@ -19,11 +19,6 @@ class ExpirableServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(
             __DIR__.'/../config/expirable.php', 'expirable'
         );
-
-        // Register commands
-        $this->commands([
-            Commands\PurgeCommand::class,
-        ]);
     }
 
     /**
@@ -40,5 +35,12 @@ class ExpirableServiceProvider extends ServiceProvider
 
         // Register macros
         Blueprint::mixin(new BlueprintMacros);
+
+        if ($this->app->runningInConsole()) {
+            // Register commands
+            $this->commands([
+                Commands\PurgeCommand::class,
+            ]);
+        }
     }
 }
