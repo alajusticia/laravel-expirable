@@ -1,4 +1,4 @@
-# Laravel Expirable
+# Laravel Expirable 📅
 
 Inspired by the SoftDeletes trait, this package provides a trait to make Eloquent models expirable.
 
