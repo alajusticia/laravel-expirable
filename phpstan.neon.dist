@@ -1,0 +1,14 @@
+includes:
+    - vendor/larastan/larastan/extension.neon
+    - extension.neon
+
+parameters:
+    level: 8
+    paths:
+        - src/PHPStan
+        - src/Traits
+        - src/Macros
+        - src/ExpirableServiceProvider.php
+        - tests/Types
+    bootstrapFiles:
+        - tests/phpstan-bootstrap.php

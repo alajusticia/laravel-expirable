@@ -4,14 +4,19 @@ namespace ALajusticia\Expirable\Traits;
 
 use ALajusticia\Expirable\Scopes\ExpirationScope;
 use Carbon\Carbon;
+use DateTimeInterface;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Config;
 
 /**
- * @method static static|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Query\Builder withExpired()
- * @method static static|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Query\Builder onlyExpired()
- * @method static static|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Query\Builder onlyEternal()
- * @method static static|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Query\Builder expiredSince()
+ * @phpstan-require-extends Model
+ *
+ * @method static Builder<static> withExpired()
+ * @method static Builder<static> onlyExpired()
+ * @method static Builder<static> onlyEternal()
+ * @method static Builder<static> expiredSince(string $period)
  */
 trait Expirable
 {
@@ -20,7 +25,7 @@ trait Expirable
      *
      * @return void
      */
-    public static function bootExpirable()
+    public static function bootExpirable(): void
     {
         static::addGlobalScope(new ExpirationScope);
 
@@ -37,7 +42,7 @@ trait Expirable
      *
      * @return void
      */
-    public function initializeExpirable()
+    public function initializeExpirable(): void
     {
         $this->casts[self::getExpirationAttribute()] = 'datetime';
     }
@@ -45,9 +50,9 @@ trait Expirable
     /**
      * Get the expiration date.
      *
-     * @return object
+     * @return Carbon|null
      */
-    public function getExpirationDate()
+    public function getExpirationDate(): ?Carbon
     {
         return $this->{self::getExpirationAttribute()};
     }
@@ -55,8 +60,8 @@ trait Expirable
     /**
      * Set the expiration date and return the instance.
      *
-     * @param object|null $expirationDate
-     * @return self
+     * @param DateTimeInterface|null $expirationDate
+     * @return $this
      */
     public function expiresAt(?object $expirationDate): self
     {
@@ -69,7 +74,7 @@ trait Expirable
      * Set the lifetime in a more human readable way and return the instance.
      *
      * @param string|null $period
-     * @return self
+     * @return $this
      */
     public function lifetime(?string $period): self
     {
@@ -81,7 +86,7 @@ trait Expirable
     /**
      * Revive an expired model.
      *
-     * @param object|string|null $newExpirationDate
+     * @param DateTimeInterface|string|null $newExpirationDate
      * @return bool
      */
     public function revive($newExpirationDate = null): bool
@@ -106,7 +111,7 @@ trait Expirable
      * Extend the lifetime by a human readable period.
      *
      * @param string $period
-     * @return self
+     * @return $this
      */
     public function extendLifetimeBy(string $period): self
     {
@@ -121,7 +126,7 @@ trait Expirable
      * Shorten the lifetime by a human readable period.
      *
      * @param string $period
-     * @return self
+     * @return $this
      */
     public function shortenLifetimeBy(string $period): self
     {
@@ -135,7 +140,7 @@ trait Expirable
     /**
      * Reset the expiration date to the default value.
      *
-     * @return self
+     * @return $this
      */
     public function resetExpiration(): self
     {
@@ -171,10 +176,11 @@ trait Expirable
     /**
      * Set the status to "expired" for the given model IDs.
      *
-     * @param  Collection|array|int  $ids
+     * @param Collection<array-key, int|string>|array<array-key, int|string>|int|string $ids
+     * @param int|string ...$additionalIds
      * @return int
      */
-    public static function expireByKey($ids): int
+    public static function expireByKey($ids, ...$additionalIds): int
     {
         // Support for collections
         if ($ids instanceof Collection) {
@@ -182,13 +188,13 @@ trait Expirable
         }
 
         // Convert parameters into an array if needed
-        $ids = is_array($ids) ? $ids : func_get_args();
+        $ids = is_array($ids) ? $ids : [$ids, ...$additionalIds];
 
-        // Create a new static instance and get the primary key for the model
-        $key = ($instance = new static)->getKeyName();
+        $query = static::query();
+        $key = $query->getModel()->getKeyName();
 
         // Perform the query
-        return $instance->whereIn($key, $ids)->expire();
+        return $query->whereIn($key, $ids)->expire();
     }
 
     /**
@@ -234,7 +240,7 @@ trait Expirable
     /**
      * The default expiration date
      *
-     * @return object|null
+     * @return DateTimeInterface|null
      */
     public static function defaultExpiresAt(): ?object
     {

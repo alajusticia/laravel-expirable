@@ -13,7 +13,7 @@ class ExpirableServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function register()
+    public function register(): void
     {
         // Merge default config
         $this->mergeConfigFrom(
@@ -26,7 +26,7 @@ class ExpirableServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         // Publish config
         $this->publishes([

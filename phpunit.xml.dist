@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
-         bootstrap="vendor/autoload.php" 
-         colors="true" 
-         cacheDirectory=".phpunit.cache" 
+         bootstrap="vendor/autoload.php"
+         colors="true"
+         cacheDirectory=".phpunit.cache"
 >
   <testsuites>
     <testsuite name="Laravel Expirable Test Suite">
@@ -16,6 +16,7 @@
     </include>
   </source>
   <php>
+    <ini name="memory_limit" value="256M"/>
     <env name="APP_ENV" value="testing"/>
     <env name="BCRYPT_ROUNDS" value="4"/>
     <env name="CACHE_DRIVER" value="array"/>

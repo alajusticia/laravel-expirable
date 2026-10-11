@@ -42,6 +42,17 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
      */
     protected function getEnvironmentSetUp($app)
     {
+        $app['config']->set('app.timezone', 'UTC');
+        $app['config']->set('database.default', 'testing');
+        $app['config']->set('database.connections.testing', [
+            'driver' => 'sqlite',
+            'database' => ':memory:',
+            'prefix' => '',
+            'foreign_key_constraints' => true,
+        ]);
+        $app['config']->set('expirable.attribute_name', 'expires_at');
+        $app['config']->set('expirable.mode', 'hard');
+
         // Testing purge command
         // Setup Subscription model to be purged
         $app['config']->set('expirable.purge', [

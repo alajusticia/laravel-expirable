@@ -36,6 +36,7 @@ When the expiration date is reached, the model will automatically disappear from
   * [Reset the expiration date to default](#reset-the-expiration-date-to-default)
   * [Get the status of a model](#get-the-status-of-a-model)
   * [Purge expired records](#purge-expired-records)
+* [PHPStan / Larastan](#phpstan--larastan)
 * [License](#license)
 
 ## Compatibility
@@ -119,7 +120,7 @@ class Subscription extends Model
     
     // ...
 
-    public static function defaultExpiresAt()
+    public static function defaultExpiresAt(): ?\DateTimeInterface
     {
         return Carbon::now()->addMonths(6);
     }
@@ -466,6 +467,22 @@ php artisan expirable:purge --mode=soft
 ```
 
 :warning: Be aware that if you try to purge models depending on tables with foreign key constraints using the default `hard` mode, you will have to specify the desired action for the "on delete" property of the constraint (for example using the onDelete('cascade'), cascadeOnDelete() or nullOnDelete() modifiers on the foreign key in your migrations: [https://laravel.com/docs/10.x/migrations#foreign-key-constraints](https://laravel.com/docs/10.x/migrations#foreign-key-constraints)) or purge the child models first (ordering the command arguments or the array in the config file to start with the children) to avoid SQL errors.
+
+## PHPStan / Larastan
+
+The package includes a PHPStan 2 extension for the local Eloquent builder macros. It preserves model types through query scopes and distinguishes bulk updates (which return an `int`) from instance methods (which return a `bool` or the model).
+
+If you use `phpstan/extension-installer`, the extension is registered automatically. Otherwise, include it alongside Larastan in your project's PHPStan configuration:
+
+```neon
+includes:
+    - vendor/larastan/larastan/extension.neon
+    - vendor/alajusticia/laravel-expirable/extension.neon
+```
+
+`getExpirationDate()` returns `Carbon\Carbon|null`. Date setters and `defaultExpiresAt()` accept or return `DateTimeInterface|null`, including mutable and immutable date objects.
+
+For package development, run `composer test` for runtime tests and `composer analyse` for the extension and consuming-project type fixtures.
 
 ## License
 

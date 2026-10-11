@@ -1,0 +1,5 @@
+services:
+    -
+        class: ALajusticia\Expirable\PHPStan\ExpirableBuilderExtension
+        tags:
+            - phpstan.broker.methodsClassReflectionExtension
